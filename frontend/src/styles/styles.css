@@ -1,0 +1,72 @@
+body {
+  background-color: #f8f9fa;
+}
+
+.container {
+  max-width: 1140px;
+}
+
+/* Auth styles */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+.auth-container .card {
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.auth-tabs {
+  margin-bottom: -1px;
+}
+
+/* Expense form styles */
+.expense-form {
+  margin-bottom: 2rem;
+}
+
+/* Category colors */
+tr.category-food td:first-child {
+  border-left: 4px solid #28a745;
+}
+
+tr.category-transportation td:first-child {
+  border-left: 4px solid #007bff;
+}
+
+tr.category-housing td:first-child {
+  border-left: 4px solid #dc3545;
+}
+
+tr.category-utilities td:first-child {
+  border-left: 4px solid #ffc107;
+}
+
+tr.category-entertainment td:first-child {
+  border-left: 4px solid #6f42c1;
+}
+
+tr.category-other td:first-child {
+  border-left: 4px solid #6c757d;
+}
+
+/* Table styles */
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+/* Loading spinner */
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}

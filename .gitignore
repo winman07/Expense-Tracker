@@ -1,0 +1,22 @@
+node_modules
+# Dependencies
+node_modules/
+
+# Serverless directories
+.serverless/
+
+# Environment variables
+.env
+
+# Build directories
+.build/
+dist/
+
+# Logs
+*.log
+
+# Local DynamoDB
+.dynamodb/
+
+# Coverage directory
+coverage/
