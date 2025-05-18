@@ -26,10 +26,27 @@ provider:
         - logs:PutLogEvents
       Resource: "*"
 
+package:
+  individually: true
+  patterns:
+    - "!node_modules/**"
+    - "!frontend/**"
+    - "!.git/**"
+    - "!.github/**"
+    - "!.vscode/**"
+    - "!*.md"
+    - "!*.yml"
+    - "!*.json"
+    - "!webpack.*"
+
 functions:
   # API Functions
   createExpense:
     handler: backend/functions/expenses/create.handler
+    package:
+      patterns:
+        - "backend/functions/expenses/create.js"
+        - "backend/shared/**"  # Include any shared code if it exists
     events:
       - http:
           path: expenses
@@ -41,6 +58,10 @@ functions:
   
   listExpenses:
     handler: backend/functions/expenses/list.handler
+    package:
+      patterns:
+        - "backend/functions/expenses/list.js"
+        - "backend/shared/**"  # Include any shared code if it exists
     events:
       - http:
           path: expenses
@@ -52,6 +73,10 @@ functions:
   
   getExpense:
     handler: backend/functions/expenses/get.handler
+    package:
+      patterns:
+        - "backend/functions/expenses/get.js"
+        - "backend/shared/**"  # Include any shared code if it exists
     events:
       - http:
           path: expenses/{id}
@@ -63,6 +88,10 @@ functions:
   
   updateExpense:
     handler: backend/functions/expenses/update.handler
+    package:
+      patterns:
+        - "backend/functions/expenses/update.js"
+        - "backend/shared/**"  # Include any shared code if it exists
     events:
       - http:
           path: expenses/{id}
@@ -74,6 +103,10 @@ functions:
   
   deleteExpense:
     handler: backend/functions/expenses/delete.handler
+    package:
+      patterns:
+        - "backend/functions/expenses/delete.js"
+        - "backend/shared/**"  # Include any shared code if it exists
     events:
       - http:
           path: expenses/{id}
@@ -141,28 +174,6 @@ resources:
         ProviderARNs:
           - !GetAtt CognitoUserPool.Arn
     
-    # S3 Bucket for Frontend
-    WebsiteBucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${self:service}-frontend-${self:provider.stage}
-        AccessControl: PublicRead
-        WebsiteConfiguration:
-          IndexDocument: index.html
-          ErrorDocument: index.html
-
-    # S3 Bucket Policy for Frontend
-    WebsiteBucketPolicy:
-      Type: AWS::S3::BucketPolicy
-      Properties:
-        Bucket: !Ref WebsiteBucket
-        PolicyDocument:
-          Statement:
-            - Sid: PublicReadGetObject
-              Effect: Allow
-              Principal: '*'
-              Action: s3:GetObject
-              Resource: !Join ['', ['arn:aws:s3:::', !Ref WebsiteBucket, '/*']]
 
   Outputs:
     ApiUrl:
@@ -174,20 +185,12 @@ resources:
     UserPoolClientId:
       Description: ID of the Cognito User Pool Client
       Value: !Ref CognitoUserPoolClient
-    WebsiteBucket:
-      Description: S3 bucket for website hosting
-      Value: !Ref WebsiteBucket
-    WebsiteURL:
-      Description: URL of the website
-      Value: !GetAtt WebsiteBucket.WebsiteURL
 
 plugins:
-  - serverless-webpack
   - serverless-s3-sync
 
+# Configure S3 sync for frontend deployment
 custom:
-  webpack:
-    webpackConfig: ./webpack.config.js
   s3Sync:
-    - bucketName: ${self:service}-frontend-${self:provider.stage}
+    - bucketName: expense-tracker-frontend-prod
       localDir: frontend/build

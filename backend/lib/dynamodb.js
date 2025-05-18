@@ -1,28 +1,51 @@
-const AWS = require('aws-sdk');
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
+const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
+const { DynamoDBDocumentClient, GetCommand, QueryCommand, PutCommand, UpdateCommand, DeleteCommand } = require('@aws-sdk/lib-dynamodb');
+
+const client = new DynamoDBClient({});
+const dynamoDb = DynamoDBDocumentClient.from(client);
 
 const TableName = process.env.EXPENSES_TABLE;
 
 const get = async (params) => {
-  const result = await dynamoDb.get({ TableName, ...params }).promise();
+  const command = new GetCommand({
+    TableName,
+    ...params
+  });
+  const result = await dynamoDb.send(command);
   return result.Item;
 };
 
 const query = async (params) => {
-  const result = await dynamoDb.query({ TableName, ...params }).promise();
+  const command = new QueryCommand({
+    TableName,
+    ...params
+  });
+  const result = await dynamoDb.send(command);
   return result.Items;
 };
 
 const put = async (params) => {
-  return dynamoDb.put({ TableName, ...params }).promise();
+  const command = new PutCommand({
+    TableName,
+    ...params
+  });
+  return dynamoDb.send(command);
 };
 
 const update = async (params) => {
-  return dynamoDb.update({ TableName, ...params }).promise();
+  const command = new UpdateCommand({
+    TableName,
+    ...params
+  });
+  return dynamoDb.send(command);
 };
 
 const remove = async (params) => {
-  return dynamoDb.delete({ TableName, ...params }).promise();
+  const command = new DeleteCommand({
+    TableName,
+    ...params
+  });
+  return dynamoDb.send(command);
 };
 
 module.exports = {

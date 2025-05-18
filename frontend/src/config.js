@@ -1,9 +1,10 @@
-const useMockData = process.env.NODE_ENV !== 'production';
+const useMockData = false;
 
 const config = {
-  apiUrl: process.env.REACT_APP_API_URL || 'API_URL_PLACEHOLDER', // Will be updated after deployment
-  userPoolId: process.env.REACT_APP_USER_POOL_ID || 'USER_POOL_ID_PLACEHOLDER', // Will be updated after deployment
-  userPoolClientId: process.env.REACT_APP_USER_POOL_CLIENT_ID || 'USER_POOL_CLIENT_ID_PLACEHOLDER', // Will be updated after deployment
+  apiUrl: 'https://uwpb2sinm0.execute-api.us-east-2.amazonaws.com/prod',
+  // These need to be at the top level, not nested in a cognito object
+  userPoolId: 'us-east-2_qZZ3zerEy',
+  userPoolClientId: '57vi4bvqr9em4pe1rhlbdoa2tg',
   region: 'us-east-2'
 };
 
